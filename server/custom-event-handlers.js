@@ -9,6 +9,7 @@ exports.handleConnection = (socket) => {
 
 exports.handleJoinRoom = (socket, data) => {
     const { userName, roomID } = data;
+    
 
     const isAlreadyInRoom = onlineUsers[socket.id]?.room === roomID;
 
@@ -83,6 +84,7 @@ const leaveCurrentRoom = (socket) => {
         return;
     }
 
+    
     announceUserAction(socket, roomID, 'left');
     removeParticipantFromLists(socket, roomID);
     
@@ -92,11 +94,13 @@ const leaveCurrentRoom = (socket) => {
 const removeParticipantFromLists = (socket, roomID) => {
     delete onlineUsers[socket.id].room;
     delete rooms[roomID].participants[socket.id];
+    
 }
 
 const announceUserAction = (socket, roomID, action) => {
     const userName = rooms[roomID].participants[socket.id].userName;
     const text =  `${ userName } has ${ action } the chat`;
+
     
     this.handleSendMessage(socket, { text, roomID });
 }
