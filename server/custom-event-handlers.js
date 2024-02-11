@@ -76,6 +76,11 @@ const sendParticipantsStatus = (socket, roomID) => {
     socket.to(roomID).emit('participants-status', room);
 }
 
+/**
+ * Leave the current room for the given socket.
+ * @param {Object} socket - The socket object.
+ * @throws {Error} If the user is not inside any room.
+ */
 const leaveCurrentRoom = (socket) => { 
     const roomID = onlineUsers[socket.id].room;
     
@@ -91,12 +96,26 @@ const leaveCurrentRoom = (socket) => {
     socket.leave(roomID);
 }
 
+/**
+ * Removes a participant from the lists.
+ * @param {Object} socket - The socket object.
+ * @param {string} roomID - The ID of the room.
+ * @throws {Error} If the socket or roomID is not provided.
+ */
 const removeParticipantFromLists = (socket, roomID) => {
     delete onlineUsers[socket.id].room;
     delete rooms[roomID].participants[socket.id];
     
 }
 
+/**
+ * Announces the user action in the chat room.
+ * 
+ * @param {object} socket - The socket object for communication.
+ * @param {string} roomID - The ID of the chat room.
+ * @param {string} action - The action performed by the user.
+ * @throws {Error} If the roomID or socket is invalid.
+ */
 const announceUserAction = (socket, roomID, action) => {
     const userName = rooms[roomID].participants[socket.id].userName;
     const text =  `${ userName } has ${ action } the chat`;
