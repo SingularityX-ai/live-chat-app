@@ -5,9 +5,11 @@ const onlineUsers = {};
 
 exports.handleConnection = (socket) => {
     onlineUsers[socket.id] = {};
+    
 }
 
 exports.handleJoinRoom = (socket, data) => {
+    
     const { userName, roomID } = data;
 
     const isAlreadyInRoom = onlineUsers[socket.id]?.room === roomID;
